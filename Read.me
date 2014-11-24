@@ -1,0 +1,62 @@
+===== 01. create repo (repo A)
+git init
+
+===== 02. repo A: create 1st commit with some files (file A, file B)
+touch fileA fileB
+git add fileA fileB
+git commit -m"initial commit"
+
+===== 03. repo A: create branch branch1 from master =====
+git branch branch1
+
+===== 04. clone the current repo (repo B) =========
+  523  cd ..
+  524  mkdir RepoB
+  525  cd RepoB
+  526  git clone ../RepoA .
+
+===== 05. repo B, branch1: create 2nd commit containing new file (file C)
+git checkout branch1
+touch fileC
+  542  git add fileC
+  543  git commit -m"added fileC"
+
+===== 06. repo B: push changes to repo A
+git push origin branch1
+
+===== 07. repo A, branch1: modify line#1 in file C and commit
+checkout branch1
+  563  cd ../RepoA
+  564  git checkout branch1
+  565  nano fileC
+  567  git add fileC
+  568  git commit -m"modified line 1 in C"
+
+===== 08. repo B, branch1: modify line#1 in file C and commit
+  575  cd ../RepoB
+  576  nano fileC
+  578  git add fileC
+  579  git commit -m"modified line 1 in C in repo B"
+
+===== 09. repo B, branch1: fetch changes from repo A
+    git fetch origin
+
+===== 10. repo B, branch1: merge in repoA's branch1 (resolve conflict)
+git mergetool
+git commit
+
+===== 11. repo A: add repoB as new remote
+cd ../RepoA
+git remote add origin ../RepoB
+
+===== 12. repo A, branch1: merge in repoB's branch1
+git branch -u origin/branch1 
+git pull
+
+
+=====
+nano Read.me
+git add Read.me
+git commit -m"added readme with commands"
+git remote add github https://github.com/nekanek/RepoA.git
+git push -u github master
